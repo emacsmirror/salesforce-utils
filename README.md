@@ -26,13 +26,13 @@ Lisp.
 
   This command appends a three-character checksum to the
   word at point if it is a valid fifteen-character Salesforce ID at
-  point, and raising an exception otherwise.
+  point, and raises an exception otherwise.
   
 ## Functions
   
 - `(salesforce-id-suffix id)`
 
-  Return the three-character checksum for `id` if it is a valid
+  Returns the three-character checksum for `id` if it is a valid
   Salesforce ID, or raises an exception otherwise.
   
 - `(salesforce-id-convert id)`
