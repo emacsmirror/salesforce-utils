@@ -5,7 +5,8 @@
 fifteen-character Salesforce object ID to an eighteen-character
 object-ID-with-checksum.
 
-This project is not associated with Salesforce in any way.
+This project is not associated with Salesforce (the company) in any
+way.
 
 # MOTIVATION
 
