@@ -24,12 +24,12 @@
 ;; 5-bit number, to a position given by reversing the bits of N.  For
 ;; example, the character Q, originally at position 10000, is here at
 ;; position 00001.  This saves us a list reversal in
-;; salesforce-id-suffix-char below.
+;; salesforce--id-suffix-char below.
 
 (defconst salesforce-table "AQIYEUM2CSK0GWO4BRJZFVN3DTL1HXP5"
   "Salesforce ID checksum lookup table")
 
-(defun salesforce-id-suffix-char (str)
+(defun salesforce--id-suffix-char (str)
   "Returns the checksum character for one of the three
 five-character blocks in a fifteen-character Salesforce ID."
   (cl-assert (= 5 (length str)) nil "ID block not exactly 5 characters long")
@@ -43,7 +43,7 @@ five-character blocks in a fifteen-character Salesforce ID."
   "Returns the three-character checksum suffix for a
 fifteen-character Salesforce ID."
   (cl-assert (= 15 (length id)) nil "Salesforce ID must be exactly 15 characters long")
-  (mapconcat (lambda (i) (salesforce-id-suffix-char (substring id i (+ 5 i)))) '(0 5 10) ""))
+  (mapconcat (lambda (i) (salesforce--id-suffix-char (substring id i (+ 5 i)))) '(0 5 10) ""))
 
 (defun salesforce-id-convert (id)
   "Computes the three-character checksum suffix for a
