@@ -1,3 +1,9 @@
+;;; salesforce-utils.el --- simple utilities for Salesforce
+
+;;; Version: 1.0
+;;; Author: Sean McAfee
+;;; Url: https://github.com/grimnebulin/emacs-salesforce
+
 ;; Copyright 2016 Sean McAfee
 
 ;; This file is part of emacs-salesforce.
@@ -60,3 +66,5 @@ Salesforce ID at point."
       (unless (looking-at (rx word-end))
         (forward-word))
       (insert suffix))))
+
+;;; salesforce-utils.el ends here
