@@ -1,9 +1,9 @@
 ;;; salesforce-utils.el --- simple utilities for Salesforce
 
-;;; Version: 1.0
-;;; Author: Sean McAfee
-;;; Url: https://github.com/grimnebulin/emacs-salesforce
-;;; Package-Requires: ((cl-lib "0.5"))
+;; Version: 1.0
+;; Author: Sean McAfee
+;; Url: https://github.com/grimnebulin/emacs-salesforce
+;; Package-Requires: ((cl-lib "0.5"))
 
 ;; Copyright 2016 Sean McAfee
 
@@ -23,6 +23,26 @@
 ;; along with emacs-salesforce.  If not, see
 ;; <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; This is a tiny package that facilitates one Salesforce-related
+;; task: converting a fifteen-character Salesforce object ID to an
+;; eighteen-character object-ID-with-checksum.
+
+;; This project is not associated with Salesforce (the company) in any
+;; way.
+
+;; MOTIVATION
+
+;; At my job, I occasionally need to convert a fifteen-digit
+;; Salesforce ID into the eighteen-character version.  I was advised by
+;; co-workers to use a Chrome plugin for this purpose, but I don't use
+;; Chrome and am generally loathe to leave Emacs when it can be
+;; avoided.  So I researched the algorithm for generating the three
+;; checksum characters and implemented it in Emacs Lisp.
+
+;;; Code:
+
 (require 'cl-lib)
 (require 'thingatpt)
 
@@ -35,11 +55,12 @@
 ;; salesforce--id-suffix-char below.
 
 (defconst salesforce-table "AQIYEUM2CSK0GWO4BRJZFVN3DTL1HXP5"
-  "Salesforce ID checksum lookup table")
+  "Salesforce ID checksum lookup table.")
 
 (defun salesforce--id-suffix-char (str)
-  "Returns the checksum character for one of the three
-five-character blocks in a fifteen-character Salesforce ID."
+  "Return the checksum character for the five-character block STR.
+The block should be one of the three five-character blocks in a
+fifteen-character Salesforce ID."
   (cl-assert (= 5 (length str)) nil "ID block not exactly 5 characters long")
   (let* ((case-fold-search nil)
          (index (cl-reduce (lambda (acc x) (+ (* 2 acc) (if x 1 0)))
@@ -48,20 +69,17 @@ five-character blocks in a fifteen-character Salesforce ID."
     (substring salesforce-table index (1+ index))))
 
 (defun salesforce-id-suffix (id)
-  "Returns the three-character checksum suffix for a
-fifteen-character Salesforce ID."
+  "Return the three-character checksum suffix for a fifteen-character Salesforce ID."
   (cl-assert (= 15 (length id)) nil "Salesforce ID must be exactly 15 characters long")
   (mapconcat (lambda (i) (salesforce--id-suffix-char (substring id i (+ 5 i)))) '(0 5 10) ""))
 
 (defun salesforce-id-convert (id)
-  "Computes the three-character checksum suffix for a
-fifteen-character Salesforce ID and returns the original ID with
-the checksum appended."
+  "Return the given fifteen-character Salesforce ID with the three-character checksum suffix appended."
   (concat id (salesforce-id-suffix id)))
 
+;;;###autoload
 (defun salesforce-append-id-suffix ()
-  "Appends the three-character checksum to the fifteen-character
-Salesforce ID at point."
+  "Append the three-character checksum to the fifteen-character Salesforce ID at point."
   (interactive)
   (let ((suffix (salesforce-id-suffix (word-at-point))))
     (save-excursion
