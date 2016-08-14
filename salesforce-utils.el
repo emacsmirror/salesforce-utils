@@ -3,6 +3,7 @@
 ;;; Version: 1.0
 ;;; Author: Sean McAfee
 ;;; Url: https://github.com/grimnebulin/emacs-salesforce
+;;; Package-Requires: ((cl-lib "0.5"))
 
 ;; Copyright 2016 Sean McAfee
 
@@ -22,7 +23,8 @@
 ;; along with emacs-salesforce.  If not, see
 ;; <http://www.gnu.org/licenses/>.
 
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
+(require 'thingatpt)
 
 ;; Typically the Salesforce table would be expressed as the uppercase
 ;; letters A-Z followed by the digits 0-5.  This version of the table
@@ -66,5 +68,7 @@ Salesforce ID at point."
       (unless (looking-at (rx word-end))
         (forward-word))
       (insert suffix))))
+
+(provide 'salesforce-utils)
 
 ;;; salesforce-utils.el ends here
